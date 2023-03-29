@@ -72,6 +72,12 @@ func NewRunnerJob(k6 *v1alpha1.K6, index int, testRunId, token string) (*batchv1
 	// Add an job tag: in case metrics are stored, they need to be distinguished by job
 	command = append(command, "--tag", fmt.Sprintf("job_name=%s", name))
 
+	command = append(command, "--out", fmt.Sprintf("json=/test/results/out.%d.json", index))
+
+	command = append(command, "--summary-export", fmt.Sprintf("/test/results/summary.%d.json", index))
+
+	command = append(command, "--log-format", "json", fmt.Sprintf("--log-output=file=/test/results/log.%d.json", index))
+
 	command = script.UpdateCommand(command)
 
 	var (

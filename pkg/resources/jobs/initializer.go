@@ -76,6 +76,7 @@ func NewInitializerJob(k6 *v1alpha1.K6, argLine string) (*batchv1.Job, error) {
 		"k6 archive %s -O %s %s 2> /tmp/k6logs && k6 inspect --execution-requirements %s 2> /tmp/k6logs ; ! cat /tmp/k6logs | grep 'level=error'",
 		scriptName, archiveName, argLine,
 		archiveName))
+	command = append(command, ";rm -f /test/results/*")
 
 	env := append(newIstioEnvVar(k6.Spec.Scuttle, istioEnabled), k6.Spec.Runner.Env...)
 
